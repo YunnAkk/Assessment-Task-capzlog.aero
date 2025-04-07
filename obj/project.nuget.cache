@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "3cc1mhqKwSU=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Yun\\Documents\\Schule\\Semester 4\\zArbeit Task\\PDFReader\\PDFReader.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Yun\\.nuget\\packages\\pdfpig\\0.1.10\\pdfpig.0.1.10.nupkg.sha512"
+  ],
+  "logs": []
+}
