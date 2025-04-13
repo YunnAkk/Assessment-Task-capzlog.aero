@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFReader", "PDFReader.csproj", "{581CBEC4-237F-4620-B7D1-B042405B20E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFReader", "PDFReader\PDFReader.csproj", "{581CBEC4-237F-4620-B7D1-B042405B20E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFReader.Tests", "..\PDFReader.Tests\PDFReader.Tests.csproj", "{FEAFBCE9-FBA2-45C4-AC56-D286E3E2A84C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFReader.Tests", "PDFReader.Tests\PDFReader.Tests.csproj", "{FEAFBCE9-FBA2-45C4-AC56-D286E3E2A84C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

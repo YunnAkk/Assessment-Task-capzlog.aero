@@ -86,5 +86,3 @@ classDiagram
     FlightPlanExtractor ..> CrewBriefingData : creates
     CrewBriefingData o-- CrewMember
 ```
-
-test
