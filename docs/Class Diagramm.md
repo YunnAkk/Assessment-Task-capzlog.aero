@@ -10,8 +10,25 @@
   }
 }}%%
 classDiagram
-    class FlightLegData {
-      // This class will hold flight specific info
+    class CrewBriefingData {       
+      +PaxBusiness: int
+      +PaxEconomy: int
+      +Dow: int
+      +Doi: double
+      +CrewMembers: List~CrewMember~
+      +Identifier: string
+      +Errors: List~string~
+      +ToString() string
+      +AddError(error: string) void
+      -HasCrewMembers() bool
+      -GetFormattedCrewList() string
+    }
+    class CrewMember {
+      +Name: string
+      +Function: string
+      +ToString() string
+    }
+    class FlightLegData {      
       +Date: string
       +Registration: string
       +DepartureIcao: string
@@ -24,65 +41,114 @@ classDiagram
       +ArrivalTime: int
       +ZeroFuelMass: int
       +TimeToDestination: int
-      +FuelToDestination: int
+      +FuelToDestination: double
       +TimeToAlternate: int
-      +FuelToAlternate: int
-      +MinFuelRequired: int
+      +FuelToAlternate: double
+      +MinFuelRequired: double
       +RouteFirstNavPoint: string
       +RouteLastNavPoint: string
-      +GainLossMinutes: int
+      +GainLoss: int
+      +Identifier: string
+      +Errors: List~string~
       +ToString() string
-      -formatTime(time: int?) string
-    }
-    class CrewBriefingData {
-       // This class will hold crew specific info
-      +PaxBusiness: int
-      +PaxEconomy: int
-      +Dow: int
-      +Doi: float
-      +CrewMembers: List~CrewMember~
-      +ToString() string
-      -HasCrewMembers() bool
-      -GetFormattedCrewList() string
-    }
-    class CrewMember {
-      +Name: string
-      +Function: string
-      +ToString() string
+      +AddError(error: string) void
+      -FormatTime(time: int) string
+      -FormatDuration(minutes: int) string            
     }
     class FlightPlan {
-      // This class will link CrewBriefingData and FlightPlanData
-      -flightLegData: FlightLegData
-      -crewBriefingData: CrewBriefingData
+      +FlightData: FlightLegData
+      +CrewData: CrewBriefingData
+      +FlightIdentifier: string
+      +Errors: List~string~
+      +Status: FlightPlanStatus
+      +FlightPlan(identifier: string, flightData: FlightLegData, crewData: CrewBriefingData)
+      +IsComplete() bool
+      +ToString() string
+      +AddError(error: string) void
     }
-    class FlightPlanExtractor {
-      // This class will extract the data from the PDF
-      -flightLegData: FlightLegData
-      -crewBriefingData: CrewBriefingData
-    }
-    class IFlightPlanService {
-      // interface defines contract, establishes how external systems will interact. serves as the API 
-      // methods not final
-      <<interface>>
-      exportToJson()
-      extractFlightPlansFromPdf()
-      getFlightPlanByNumber()
-    }
-    class FlightPlanService {
-      // implements the interface
+    class FlightPlanStatus {
+      <<enumeration>>
+      Complete
+      MissingFlightData
+      MissingCrewData
+      HasErrors
     }
     class FlightPlanConsolePresenter {
-      // focuses only on the console output
-      +display(flightPlan: FlightPlan): void
-      +displaySummary(flightPlans: List~FlightPlan~): void
+      +DisplaySeparator() void
+      +DisplayErrors(errors: List~string~) void
+      +DisplaySummary(flightPlans: List~FlightPlan~) void
+      +DisplayFlightPlan(flightPlan: FlightPlan) void
+    }
+    class FlightPlanExtractor {        
+      -PageMarkerText: string
+      -FirstPageNumberText: string
+      -DefaultWordsToTake: int
+      -TopMarginThresholdFactor: double
+      -SameLineThreshold: double
+      -MaxGapMultiplier: double
+      -ColumnPadding: int
+      -NameColumnExtension: int
+      -MIN_TIME_LENGTH: int
+      -MAX_TIME_LENGTH: int
+      -MAX_HOURS: int
+      -MAX_MINUTES: int
+      +FindAndExtractFlightData(pdfFilePath: string):(List~FlightLegData~, List~CrewBriefingData~, List~string~)
+      -FindPagesOfType(document: PdfDocument, pageType: PageType): (List<(pageNumber: int, Identifier: string)>)
+      -DeterminePageType(page: Page, pageType: PageType) (isMatch: bool, Identifier: string)
+      -IsFlightPlanPage(wordList: List~Word~) bool
+      -IsCrewBriefingPage(wordList: List~Word~, out flightNumber: string) bool
+      -ExtractDataFromPage(page: Page) FlightLegData
+      -ExtractCrewDataFromPage(page: Page, preIdentifiedIdentifier: string) CrewBriefingData
+      -FindValueNextToLabel(words: List~Word~, label: string, errorReporter: IErrorReporter, fieldName: string, wordsToTake: int) string
+      -ParseTime(timeStr: string?, data: FlightLegData, fieldName: string) int
+      -ParseIntBeforeUnit(valueStr: string?, data: FlightLegData, fieldName: string) int
+      -ParseDouble(valueStr: string?, data: FlightLegData, fieldName: string, extractSecondNumber: bool) double
+      -ParseGainLoss(valueStr: string?, data: FlightLegData, fieldName: string) int
+      -ExtractRouteWaypoints(words: List~Word~, data: FlightLegData) (string? firstWaypoint, string? lastWaypoint)
+      -ExtractPassengerCounts(words: List~Word~, data: CrewBriefingData) void
+      -ExtractCrewList(page: Page, words: List~Word~, data: CrewBriefingData) void
+    }
+    class FlightPlanLinker {
+      +LinkDataByIdentifier(extractedLegs: List~FlightLegData~, extractedBriefings: List~CrewBriefingData~, linkingErrors: List~string~) List~FlightPlan~
+    }
+    class IErrorReporter {
+      <<interface>>
+      +AddError(error: string) void
+    }
+    class IFlightPlanExtractor {
+      <<interface>>
+      +FindAndExtractFlightData(pdfFilePath: string):(List~FlightLegData~, List~CrewBriefingData~, List~string~)
+    }
+    class PageType {
+      <<enumeration>>
+      FlightPlan
+      CrewBriefing
     }
     class Program {
-      // entry point to program
-      +Main(args: string[]): void
+      +Main(args: string[]) void
     }
-    FlightPlan o-- FlightLegData
-    FlightPlan o-- CrewBriefingData
+    FlightPlanExtractor ..|> IFlightPlanExtractor : implements
+    FlightLegData ..|> IErrorReporter : implements
+    CrewBriefingData ..|> IErrorReporter : implements
+    FlightPlan ..|> IErrorReporter : implements
+
     FlightPlanExtractor ..> FlightLegData : creates
     FlightPlanExtractor ..> CrewBriefingData : creates
-    CrewBriefingData o-- CrewMember
+    FlightPlanExtractor ..> PageType : uses
+
+    FlightPlanLinker ..> FlightPlan : creates
+    FlightPlanLinker ..> FlightLegData : uses
+    FlightPlanLinker ..> CrewBriefingData : uses
+
+    FlightPlanConsolePresenter ..> FlightPlan : uses
+
+    Program ..> FlightPlanExtractor : uses
+    Program ..> FlightPlanLinker : uses
+    Program ..> FlightPlanConsolePresenter : uses
+
+    CrewBriefingData o-- CrewMember : contains
+    FlightPlan o-- FlightLegData : contains
+    FlightPlan o-- CrewBriefingData : contains
+
+    FlightPlan ..> FlightPlanStatus : uses
 ```

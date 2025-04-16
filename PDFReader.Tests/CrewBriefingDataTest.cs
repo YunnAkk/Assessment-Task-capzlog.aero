@@ -12,6 +12,7 @@ public class CrewBriefingDataTest
         // Arrange
         var crewBriefing = new CrewBriefingData
         {
+            Identifier = "LX10/SWR10A",
             PaxBusiness = 12,
             PaxEconomy = 150,
             Dow = 42500,
@@ -25,6 +26,7 @@ public class CrewBriefingDataTest
         };
 
         var expectedSb = new StringBuilder();
+        expectedSb.AppendLine("Identifier: LX10/SWR10A");
         expectedSb.AppendLine("Number of passengers in business (C) class: 12");
         expectedSb.AppendLine("Number of passengers in economy (Y) class: 150");
         expectedSb.AppendLine("Dry operating weight: 42500");

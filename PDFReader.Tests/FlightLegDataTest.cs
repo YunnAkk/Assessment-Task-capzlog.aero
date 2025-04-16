@@ -28,7 +28,8 @@ namespace PDFReader.Tests {
                 MinFuelRequired = 52000,
                 RouteFirstNavPoint = "DET",
                 RouteLastNavPoint = "CANAL",
-                GainLossMinutes = -5
+                GainLoss = -5,
+                Identifier = "LX10/SWR10A"
             };
 
             var expectedSb = new StringBuilder();
@@ -37,12 +38,13 @@ namespace PDFReader.Tests {
             expectedSb.AppendLine("From: EGLL To: KJFK");
             expectedSb.AppendLine("Dep: 10:30Z Arr: 18:45Z");
             expectedSb.AppendLine("Alternates: 1st: KBOS, 2nd: KIAD");
-            expectedSb.AppendLine("Time to Dest: 480, Fuel to Dest: 45000");
-            expectedSb.AppendLine("Time to Alt: 60, Fuel to Alt: 5000");
+            expectedSb.AppendLine("Time to Dest: 08:00, Fuel to Dest: 45000");
+            expectedSb.AppendLine("Time to Alt: 01:00, Fuel to Alt: 5000");
             expectedSb.AppendLine("Min Fuel Req: 52000");
             expectedSb.AppendLine("Route Waypoints: 1st: DET, Last: CANAL");
             expectedSb.AppendLine("ZFM: 55000");
-            expectedSb.Append("Gain/Loss: -5");
+            expectedSb.AppendLine("Gain/Loss: -5");
+            expectedSb.Append("Identifier: LX10/SWR10A");
             string expected = expectedSb.ToString();
 
             // Act
