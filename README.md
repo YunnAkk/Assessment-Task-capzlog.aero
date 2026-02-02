@@ -98,6 +98,10 @@ This project took me approximately 18 hours, from start to the current state wit
 
 ## Closing Words
 
-I enjoyed taking on this task—working with C# made me appreciate the language a lot. Features like optionally nullable data fields are fantastic and something that Java lacks.  
+I enjoyed taking on this task. Working with C# made me appreciate the language a lot. Features like optionally nullable data fields are fantastic and something that Java lacks.  
 
 I would have liked to implement more comprehensive tests, especially using mocks, as the current tests are very minimal. Additionally, the program has issues running normally, which isn't ideal. That said, I'm pleased with the code quality. It's not perfect by any means, but I tried my best to keep the code modular, performant, and easy to read.
+
+## Disclaimer
+
+For Grammar corrections AI was used. Specifically, write text -> give to LLM asking for grammar corrections -> read LLM Output and use it if it sounds good. By no means is this a perfect way and/or 100% correct, but i'm happy with the results. Over time i learn to improve my own english and the text is also clearer/easier to read.
